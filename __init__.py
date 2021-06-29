@@ -1,5 +1,5 @@
 from hoshino import Service
-from .new import crawler,FILE_NAME,url_decide
+from .steam_crawler_bot import crawler,FILE_NAME,url_decide
 import json
 import os
 
@@ -8,6 +8,23 @@ url_new = "https://store.steampowered.com/search/results/?l=schinese&query&dynam
 url_specials = "https://store.steampowered.com/search/results/?l=schinese&query&sort_by=_ASC&category1=998&specials=1&filter=topsellers&start=0&count=50"
 FILE_PATH = os.path.dirname(__file__)
 
+def mes_creater(path):
+    mes_list = []
+    with open(path, "r", encoding="utf-8")as f:
+        for line in f.readlines():
+            result_dict = json.loads(line)
+            mes = f"[CQ:image,file={result_dict['图片']}]\n{result_dict['标题']}\n原价:{result_dict['原价']}\n链接:{result_dict['链接']}\n"
+            data = {
+            "type": "node",
+            "data": {
+                "name": "sbeam机器人",
+                "uin": "2854196310",
+                "content":mes
+                    }
+                }
+            mes_list.append(data)
+    return mes_list
+
 #匹配关键词发送相关信息，例：今日特惠，发送今日特惠信息，今日新品则发送新品信息
 @sv.on_prefix('今日')
 async def Gameinfo(bot, ev):
@@ -15,7 +32,6 @@ async def Gameinfo(bot, ev):
     if model == "新品":
         open_file = FILE_NAME(url_new)
         if not os.path.exists(open_file):
-            await bot.send(ev, "正在抓取...")
             try:
                 crawler(url_new)
             except:
@@ -23,28 +39,14 @@ async def Gameinfo(bot, ev):
     elif model == "特惠":
         open_file = FILE_NAME(url_specials)
         if not os.path.exists(open_file):
-            await bot.send(ev, "正在抓取...")
             try:
                 crawler(url_specials)
             except:
                 await bot.send(ev, "哦吼，出错了，请检查运行日志或者稍后再试")
-    mes_list = []
     try:
-        with open(open_file, "r", encoding="utf-8")as f:
-            for line in f.readlines():
-                result_dict = json.loads(line)
-                mes = f"[CQ:image,file={result_dict['图片']}]\n{result_dict['标题']}\n原价:{result_dict['原价']}\n链接:{result_dict['链接']}\n"
-                data = {
-                "type": "node",
-                "data": {
-                    "name": "sbeam机器人",
-                    "uin": "2854196310",
-                    "content":mes
-                        }
-                    }
-                mes_list.append(data)
-        await bot.send(ev, "正在生成合并消息，请稍等片刻！")
-        await bot.send_group_forward_msg(group_id=ev['group_id'], messages=mes_list, at_sender=True)
+        mes_list = mes_creater(open_file)
+        await bot.send(ev, "正在生成合并消息，请稍等片刻！", at_sender=True)
+        await bot.send_group_forward_msg(group_id=ev['group_id'], messages=mes_list)
     except:
         pass
 
@@ -57,27 +59,14 @@ async def search_tag(bot, ev):
         await bot.send(ev, "没有匹配到有效标签")
         pass
     else:
-        await bot.send(ev, "正在搜索...")
+        await bot.send(ev, "正在搜索并生成合并消息中，请稍等片刻！", at_sender=True)
         try:
             crawler(url[0])
         except:
             await bot.send(ev, "哦吼，出错了，请检查运行日志或者稍后再试")
-        mes_list = []
-        with open(FILE_NAME(url[0]), "r", encoding="utf-8")as f:
-            for line in f.readlines():
-                result_dict = json.loads(line)
-                mes = f"[CQ:image,file={result_dict['图片']}]\n{result_dict['标题']}\n原价:{result_dict['原价']}\n链接:{result_dict['链接']}\n"
-                data = {
-                "type": "node",
-                "data": {
-                    "name": "sbeam机器人",
-                    "uin": "2854196310",
-                    "content":mes
-                        }
-                    }
-                mes_list.append(data)
+        mes_list = mes_creater(FILE_NAME(url[0]))
         await bot.send(ev, f"标签{url[1].strip(',')}搜索结果如下:")
-        await bot.send_group_forward_msg(group_id=ev['group_id'], messages=mes_list, at_sender=True)
+        await bot.send_group_forward_msg(group_id=ev['group_id'], messages=mes_list)
 
 #后接游戏名，例：st搜游戏泰坦陨落
 @sv.on_prefix(('st搜游戏','St搜游戏','ST搜游戏'))
@@ -90,21 +79,9 @@ async def search_term(bot, ev):
         await bot.send(ev, "哦吼，出错了，请检查运行日志或者稍后再试")
     mes_list = []
     try:
-        with open(FILE_NAME(url_term), "r", encoding="utf-8")as f:
-            for line in f.readlines():
-                result_dict = json.loads(line)
-                mes = f"[CQ:image,file={result_dict['图片']}]\n{result_dict['标题']}\n原价:{result_dict['原价']}\n链接:{result_dict['链接']}\n"
-                data = {
-                "type": "node",
-                "data": {
-                    "name": "sbeam机器人",
-                    "uin": "2854196310",
-                    "content":mes
-                        }
-                    }
-                mes_list.append(data)
-        await bot.send(ev, f"游戏{term}搜索结果如下:")
-        await bot.send_group_forward_msg(group_id=ev['group_id'], messages=mes_list, at_sender=True)
+        mes_list = mes_creater(FILE_NAME(url_term))
+        await bot.send(ev, f"游戏{term}搜索结果如下:", at_sender=True)
+        await bot.send_group_forward_msg(group_id=ev['group_id'], messages=mes_list)
     except:
         await bot.send(ev, "无搜索结果")
 
