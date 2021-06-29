@@ -44,9 +44,6 @@ def crawler(url_choose):
         #获取缩略图链接
         img = re.findall(r"src=\"(.*?)\"", str(row))
         img_list.append(img[0])
-        # res = get(str(img[0]).replace("capsule_sm_120", "header")).content
-        # with open(os.path.join(IMG_PATH, str(row_list.index(row))) + ".jpg", 'wb') as f:
-        #     f.write(res)
         #获取价格
         if str(soup_list.strike) == "None" :
             m = str(re.findall(r"<div class=\"col search_price responsive_secondrow\">(.*?)</div>", str(row))[0].replace(" ", ""))
