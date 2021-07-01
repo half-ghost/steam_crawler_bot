@@ -38,7 +38,6 @@ def crawler(url_choose):
     img_list = []
     for row in row_list:
         soup_list = bs(str(row), "lxml")
-        print(row)
         #获取标题
         title = re.findall(r"<span class=\"title\">(.*?)</span>", str(row))
         title_list.append(title[0])
