@@ -6,8 +6,6 @@ import os
 
 FILE_PATH = os.path.join(os.path.dirname(__file__), "results")
 TAG_PATH = os.path.join(os.path.dirname(__file__))
-
-
 #根据爬取的网址返回生成json文件的路径和命名
 def FILE_NAME(url_check):
     if "Released_DESC" in url_check:
@@ -26,7 +24,12 @@ def crawler(url_choose):
         os.mkdir(FILE_PATH)
     if os.path.exists(FILE_NAME(url_choose)):
         os.remove(FILE_NAME(url_choose))
-    get_request = get(url_choose).content.decode()
+    state = ""
+    try:
+        get_request = get(url_choose).content.decode()
+        state = "good"
+    except:
+        state = "爬虫运行失败，请检查主机网络设置！"
     soup = bs(get_request.replace(r"\n", "").replace(r"\t", "").replace(r"\r", "").replace("\\", ""), "lxml")
     row_list = soup.find_all(name = "a", class_ = "search_result_row")
     title_list = []
@@ -35,6 +38,7 @@ def crawler(url_choose):
     img_list = []
     for row in row_list:
         soup_list = bs(str(row), "lxml")
+        print(row)
         #获取标题
         title = re.findall(r"<span class=\"title\">(.*?)</span>", str(row))
         title_list.append(title[0])
@@ -46,7 +50,11 @@ def crawler(url_choose):
         img_list.append(img[0])
         #获取价格
         if str(soup_list.strike) == "None" :
-            m = str(re.findall(r"<div class=\"col search_price responsive_secondrow\">(.*?)</div>", str(row))[0].replace(" ", ""))
+            try:
+                m = str(re.findall(r"<div class=\"col search_price responsive_secondrow\">(.*?)</div>", str(row))[0].replace(" ", ""))
+            except:
+                m = ("无价格信息")
+                price_list.append(m)
             if "¥" in m:
                 price_list.append(m)
             else:
@@ -54,7 +62,6 @@ def crawler(url_choose):
         else:
             discount = re.findall(r"<br/>(.*?)  ", str(row))
             price_list.append(soup_list.strike.string.replace(" ", "") + " 折扣价为" + str(discount[0]).replace(" ", ""))
-    
     
     result_dict = {}
     for i in title_list:
@@ -65,6 +72,7 @@ def crawler(url_choose):
         result_dict["图片"] = img_list[index]
         with open(FILE_NAME(url_choose), "a", encoding="utf-8")as f:
             f.write(json.dumps(result_dict, ensure_ascii=False) + "\n")
+    return state
 
 #根据传入参数返回搜索页链接以及搜索的标签
 def url_decide(tag, page):
