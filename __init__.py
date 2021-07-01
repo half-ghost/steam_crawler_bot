@@ -4,8 +4,8 @@ import json
 import os
 
 sv = Service("stbot")
-url_new = "https://store.steampowered.com/search/results/?l=schinese&query&dynamic_data=&sort_by=Released_DESC&snr=1_7_7_230_7&category1=998&os=win&infinite=1&start=0&count=50"
-url_specials = "https://store.steampowered.com/search/results/?l=schinese&query&sort_by=_ASC&category1=998&specials=1&filter=topsellers&start=0&count=50"
+url_new = "https://store.steampowered.com/search/results/?l=schinese&query&sort_by=Released_DESC&category1=998&os=win&infinite=1&start=0&count=50"
+url_specials = "https://store.steampowered.com/search/results/?l=schinese&query&sort_by=_ASC&category1=998&specials=1&os=win&filter=topsellers&start=0&count=50"
 FILE_PATH = os.path.dirname(__file__)
 
 def mes_creater(path):
