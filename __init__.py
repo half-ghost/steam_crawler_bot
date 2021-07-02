@@ -53,7 +53,7 @@ async def Gameinfo(bot, ev):
 #后接格式：页数(阿拉伯数字) 标签1 标签2，例：st搜标签1 动作 射击
 @sv.on_prefix(('st搜标签','St搜标签','ST搜标签'))
 async def search_tag(bot, ev):
-    model = ev.message.extract_plain_text().strip().split(" ")
+    model = ev.message.extract_plain_text().strip().lower().split(" ")
     url = url_decide(model, int(model[0]))
     if url[1] == "":
         await bot.send(ev, "没有匹配到有效标签")
