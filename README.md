@@ -18,13 +18,21 @@
 
 <img src="https://z3.ax1x.com/2021/06/29/RdORTx.jpg" width="%50" height="%50" />
 
+- **小黑盒数据查询，包含了爬取到的游戏是否处于史低的信息**
+> 命令：小黑盒查询/小黑盒查询页（后接阿拉伯数字）
+
+<img src="https://z3.ax1x.com/2021/07/04/RfwWzd.jpg" width="%50" height="%50" />
 
 **使用方法：**
 
-在HoshinoBot的modules文件夹下新建一个steam_crawler_bot文件夹，并将本项目的文件复制进去，然后在hoshino/config/__bot__.py中的MODULES_ON中添加'steam_crawler_bot'
+在HoshinoBot的modules文件夹下新建一个steam_crawler_bot文件夹，并将本项目的文件复制进去，然后在hoshino/config/\_\_bot\_\_.py中的MODULES_ON中添加'steam_crawler_bot'
 
 HoshinoBot的部署详见[HoshinoBot](https://github.com/Ice-Cirno/HoshinoBot)
 
+# 更新
+
+_2021.7.4 新增了小黑盒数据爬取功能，优化了一些报错的提示，以及使代码规范化了一些_
+
 # 计划
 
-或许会加入更多奇奇怪怪的功能，敬请期待
+或许会加入更多奇奇怪怪的功能，欢迎提交pr或issue来告诉我你们希望能加入什么功能
