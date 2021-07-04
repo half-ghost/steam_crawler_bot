@@ -18,7 +18,7 @@
 
 <img src="https://z3.ax1x.com/2021/06/29/RdORTx.jpg" width = "35%" height = "35%" align=center />
 
-- **小黑盒数据查询，包含了爬取到的游戏是否处于史低的信息**
+- **小黑盒数据查询，包含了爬取到的游戏是否处于史低以及是否新史低的信息**
 > 命令：小黑盒查询/小黑盒查询页（后接阿拉伯数字）
 
 <img src="https://z3.ax1x.com/2021/07/04/Rfrq7q.jpg" width = "35%" height = "35%" align=center />
