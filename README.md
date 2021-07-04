@@ -6,22 +6,24 @@
 - **查询今日特惠以及今日新品信息（默认返回50条）**
 > 命令：今日特惠 or 今日新品
 
-<img src="https://z3.ax1x.com/2021/06/29/RdOwkV.jpg" width="%50" height="%50" />
+<img src="https://z3.ax1x.com/2021/06/29/RdOwkV.jpg" width = "35%" height = "35%" align=center />
 
 - **根据输入的标签查询结果，所有steam标签详见tag.json（默认返回50条，标签需要全匹配,会过滤没匹配到的标签）**
 > 命令：st搜标签 后接格式：页数(阿拉伯数字) 标签1 标签2，(记得用空格隔开)例：st搜标签1 动作 射击
 
-<img src="https://z3.ax1x.com/2021/06/29/RdOsl4.jpg" width="%50" height="%50" />
+<img src="https://z3.ax1x.com/2021/06/29/RdOsl4.jpg" width = "35%" height = "35%" align=center />
 
 - **根据输入的游戏名字查询结果（能搜到多少条游戏信息就返回多少条）**
 > 命令：st搜游戏 后接游戏名字
 
-<img src="https://z3.ax1x.com/2021/06/29/RdORTx.jpg" width="%50" height="%50" />
+<img src="https://z3.ax1x.com/2021/06/29/RdORTx.jpg" width = "35%" height = "35%" align=center />
 
 - **小黑盒数据查询，包含了爬取到的游戏是否处于史低的信息**
 > 命令：小黑盒查询/小黑盒查询页（后接阿拉伯数字）
 
-<img src="https://z3.ax1x.com/2021/07/04/RfwWzd.jpg" width="%50" height="%50" />
+<img src="https://z3.ax1x.com/2021/07/04/Rfrq7q.jpg" width = "35%" height = "35%" align=center />
+
+**更多详细请发送"st机器人帮助"获取**
 
 **使用方法：**
 
