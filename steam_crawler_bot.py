@@ -43,6 +43,9 @@ def crawler(url_choose):
         # 获取缩略图链接
         img = re.findall(r"src=\"(.*?)\"", str(row))
         img_list.append(img[0])
+        # res = get(str(img[0]).replace("capsule_sm_120", "header")).content
+        # with open(os.path.join(IMG_PATH, str(row_list.index(row))) + ".jpg", 'wb') as f:
+        #     f.write(res)
         # 获取价格
         if str(soup_list.strike) == "None" :
             try:
@@ -57,6 +60,7 @@ def crawler(url_choose):
         else:
             discount = re.findall(r"<br/>(.*?)  ", str(row))
             price_list.append(soup_list.strike.string.replace(" ", "") + " 折扣价为" + str(discount[0]).replace(" ", ""))
+    
     
     result_dict = {}
     for i in title_list:
@@ -116,10 +120,15 @@ def hey_box(page):
         except:
             lowest = json_page["result"]["list"][i]["price"]["is_lowest"]
         if lowest == 1:
-            lowest_state = "是"
+            lowest_state = "是史低哦"
         else:
-            lowest_state = "否"
-        mes = f"[CQ:image,file={img}]\n{title}\n原价:¥{original} 当前价:¥{current} 史低:{lowest_state}\n链接:{href}\n"
+            lowest_state = "不是史低哦"
+        new_lowest = json_page["result"]["list"][i]["price"]["new_lowest"]
+        if new_lowest == 1:
+            newlowest = "好耶！是新史低！"
+        else:
+            newlowest = ""
+        mes = f"[CQ:image,file={img}]\n{title}\n原价:¥{original} 当前价:¥{current} {lowest_state}\n链接:{href}\n{newlowest}\n".strip()
         data = {
         "type": "node",
         "data": {
