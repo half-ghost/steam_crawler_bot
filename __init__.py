@@ -126,14 +126,6 @@ async def heybox(bot, ev):
     except Exception as e:
         sv.logger.error(f"Error:{e}")
         await bot.send(ev, "哦吼，出错了，请检查主机网络情况或者查看运行日志")
-
-@sv.scheduled_job('cron', hour='*')
-async def cycle():
-    try:
-        crawler(url_new)
-        crawler(url_specials)
-    except:
-        pass
     
 # 每半小时清理缓存的搜索结果
 @sv.scheduled_job('cron', hour='*', minute='30')
