@@ -33,6 +33,7 @@ HoshinoBot的部署详见[HoshinoBot](https://github.com/Ice-Cirno/HoshinoBot)
 
 # 更新
 
+_2021.7.7 有个定时任务似乎会造成hoshino程序卡死，先删除该定时任务，后续再考虑解决方案_
 _2021.7.4 新增了小黑盒数据爬取功能，优化了一些报错的提示，以及使代码规范化了一些_
 
 # 计划
