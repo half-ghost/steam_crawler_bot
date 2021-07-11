@@ -33,6 +33,10 @@ HoshinoBot的部署详见[HoshinoBot](https://github.com/Ice-Cirno/HoshinoBot)
 
 # 更新
 
+_2021.7.11 改善tag.json的数据结构，使其读取更方便快速。在搜索结果中新增了折扣比、用户评测以及热门用户自定义标签三项信息_
+
+<img src="https://z3.ax1x.com/2021/07/11/W9zAUO.jpg" width = "35%" height = "35%" align=center />
+
 _2021.7.7 有个定时任务似乎会造成hoshino程序卡死，先删除该定时任务，后续再考虑解决方案_
 
 _2021.7.4 新增了小黑盒数据爬取功能，优化了一些报错的提示，以及使代码规范化了一些_
