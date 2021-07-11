@@ -90,7 +90,7 @@ async def search_tag(bot, ev):
 @sv.on_prefix(('st搜游戏','St搜游戏','ST搜游戏'))
 async def search_term(bot, ev):
     term = ev.message.extract_plain_text().strip()
-    url_term = "https://store.steampowered.com/search/results/?query&start=0&count=50&dynamic_data=&sort_by=_ASC&snr=1_7_7_151_7&infinite=1&term=" + term
+    url_term = "https://store.steampowered.com/search/results/?l=schinese&query&start=0&count=50&dynamic_data=&sort_by=_ASC&snr=1_7_7_151_7&infinite=1&term=" + term
     try:
         crawler(url_term)
     except Exception as e:
