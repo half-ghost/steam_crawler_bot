@@ -9,7 +9,7 @@
 <img src="https://z3.ax1x.com/2021/06/29/RdOwkV.jpg" width = "35%" height = "35%" align=center />
 
 - **根据输入的标签查询结果，所有steam标签详见tag.json（默认返回50条，标签需要全匹配,会过滤没匹配到的标签）**
-> 命令：st搜标签 后接格式：页数(阿拉伯数字) 标签1 标签2，(记得用空格隔开)例：st搜标签1 动作 射击
+> 命令：st搜标签 后接格式：页数(阿拉伯数字) 标签a 标签b，(记得用空格隔开)例：st搜标签1 动作 射击
 
 <img src="https://z3.ax1x.com/2021/06/29/RdOsl4.jpg" width = "35%" height = "35%" align=center />
 
