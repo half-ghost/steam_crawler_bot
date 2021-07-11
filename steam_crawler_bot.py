@@ -25,7 +25,7 @@ def crawler(url_choose):
         os.mkdir(FILE_PATH)
     if os.path.exists(FILE_NAME(url_choose)):
         os.remove(FILE_NAME(url_choose))
-    with open(os.path.join(TAG_PATH, "tag2.json"), "r", encoding="utf-8")as f:
+    with open(os.path.join(TAG_PATH, "tag.json"), "r", encoding="utf-8")as f:
         data = json.loads(f.read())
     get_request = get(url_choose).content.decode()
     soup = bs(get_request.replace(r"\n", "").replace(r"\t", "").replace(r"\r", "").replace("\\", ""), "lxml")
@@ -95,7 +95,7 @@ def url_decide(tag, page):
     tag_name = ""
     tag_list = tag
     count = f"&start={(page-1)*50}&count=50"
-    with open(os.path.join(TAG_PATH, "tag2.json"), "r", encoding="utf-8")as f:
+    with open(os.path.join(TAG_PATH, "tag.json"), "r", encoding="utf-8")as f:
         data = json.loads(f.read())
         for i in tag_list:
             try:
