@@ -1,7 +1,7 @@
 help = '''
 本插件有如下指令：
 1.[今日特惠 or 今日新品]：爬取steam的特惠或新品页的数据并发送合并消息
-2.[st搜标签]：后接格式为页数(阿拉伯数字) 标签1 标签2，例：st搜标签1 射击 多人，
+2.[st搜标签]：后接格式为页数(阿拉伯数字) 标签a 标签b，例：st搜标签1 射击 多人，
 即搜索射击和多人的标签的第一页，由于steam一页有50个数据，故返回50条消息
 3.[st搜游戏]：后接游戏名称，只可同时搜索一个游戏，返回页面为输入内容的真实搜索结果，
 所以如果输入的游戏是英文名，而用户搜索的是中文名，可能搜到的不是想要的结果
@@ -27,7 +27,7 @@ def mes_creater(path):
     with open(path, "r", encoding="utf-8")as f:
         for line in f.readlines():
             result_dict = json.loads(line)
-            mes = f"[CQ:image,file={result_dict['图片']}]\n{result_dict['标题']}\n原价:{result_dict['原价']}\n链接:{result_dict['链接']}\n"
+            mes = f"[CQ:image,file={result_dict['图片']}]\n{result_dict['标题']}\n原价：{result_dict['原价']}\n链接:{result_dict['链接']}\n{result_dict['评测']}\n用户标签：{result_dict['标签']}"
             data = {
             "type": "node",
             "data": {
