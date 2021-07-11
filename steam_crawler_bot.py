@@ -103,7 +103,7 @@ def url_decide(tag, page):
                 tag_name += i + ","
             except:
                 pass
-    tag_search_url = "https://store.steampowered.com/search/results/?query&force_infinite=1&filter=topsellers&snr=1_7_7_7000_7&infinite=1" + tag_search.strip(",") + count
+    tag_search_url = "https://store.steampowered.com/search/results/?l=schinese&query&force_infinite=1&filter=topsellers&snr=1_7_7_7000_7&infinite=1" + tag_search.strip(",") + count
     return tag_search_url,tag_name
 
 # 小黑盒数据爬虫
