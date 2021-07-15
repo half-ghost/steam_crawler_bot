@@ -33,6 +33,8 @@ HoshinoBot的部署详见[HoshinoBot](https://github.com/Ice-Cirno/HoshinoBot)
 
 # 更新
 
+2021.7.15 修复小黑盒查询可能会报错的情况，抛弃原本文本缓存机制，精简代码（怎么这垃圾插件代码越写越少
+
 2021.7.11 改善tag.json的数据结构，使其读取更方便快速。在来源自steam的搜索结果中新增了折扣比、用户评测以及热门用户自定义标签三项信息
 
 <img src="https://z3.ax1x.com/2021/07/11/W9zAUO.jpg" width = "35%" height = "35%" align=center />
