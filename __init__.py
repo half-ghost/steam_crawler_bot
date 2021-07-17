@@ -96,3 +96,7 @@ async def heybox(bot, ev):
     except Exception as e:
         sv.logger.error(f"Error:{e}")
         await bot.send(ev, "哦吼，出错了，请检查主机网络情况、查看运行日志或者再试一遍")
+
+@sv.on_fullmatch(('st机器人帮助','St机器人帮助','ST机器人帮助'))
+async def bot_help(bot, ev):
+    await bot.send(ev, help)
