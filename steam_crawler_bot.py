@@ -4,6 +4,8 @@ from requests import get
 import json
 import os
 
+from requests.models import stream_decode_response_unicode
+
 TAG_PATH = os.path.join(os.path.dirname(__file__))
 
 # 主爬虫程序
@@ -56,9 +58,8 @@ def crawler(url_choose):
         tag_list.append(tagk.strip(","))
     
     mes_list = []
-    for i in title_list:
-        index = title_list.index(i)
-        mes = f"[CQ:image,file={img_list[index]}]\n{title_list[index]}\n原价：{price_list[index]}\n链接:{href_list[index]}\n{rate_list[index]}\n用户标签：{tag_list[index]}"
+    for i in range(len(title_list)):
+        mes = f"[CQ:image,file={img_list[i]}]\n{title_list[i]}\n原价：{price_list[i]}\n链接:{href_list[i]}\n{rate_list[i]}\n用户标签：{tag_list[i]}"
         data = {
         "type": "node",
         "data": {
@@ -98,13 +99,13 @@ def hey_box(page):
         "data": {
             "name": "sbeam机器人",
             "uin": "2854196310",
-            "content":"***数据来源于小黑盒官网***"
+            "content":f"    ***数据来源于小黑盒官网***\n***默认展示小黑盒steam促销页面***"
                 }
             }
     result.insert(0,announce)
     for i in range(30):
         # appid
-        href = "https://store.steampowered.com/app/" + str(json_page["result"]["list"][i]["appid"])
+        url = "https://store.steampowered.com/app/" + str(json_page["result"]["list"][i]["appid"])
         img = "https://media.st.dl.pinyuncloud.com/steam/apps/" + str(json_page["result"]["list"][i]["appid"]) + "/capsule_sm_120.jpg"
         # 名称
         title = json_page["result"]["list"][i]["game_name"]
@@ -117,19 +118,89 @@ def hey_box(page):
             lowest = json_page["result"]["list"][i]["heybox_price"]["is_lowest"]
         except:
             lowest = json_page["result"]["list"][i]["price"]["is_lowest"]
-        if lowest == 1:
-            lowest_state = "是史低哦"
-        else:
-            lowest_state = "不是史低哦"
+        lowest_state = "是史低哦" if lowest == 1 else "不是史低哦"
         try:
             new_lowest = json_page["result"]["list"][i]["price"]["new_lowest"]
-            if new_lowest == 1:
-                newlowest = "好耶！是新史低！"
-            else:
-                newlowest = ""
+            newlowest = "好耶！是新史低！" if new_lowest == 1 else ""
         except:
             newlowest = ""
-        mes = f"[CQ:image,file={img}]\n{title}\n原价:¥{original} 当前价:¥{current} {lowest_state}\n链接:{href}\n{newlowest}\n".strip()
+        # 截止日期
+        try:
+            deadline = json_page["result"]["list"][i]["price"]["deadline_date"]
+        except:
+            deadline = "无截止日期信息"
+        mes = f"[CQ:image,file={img}]\n{title}\n原价:¥{original} 当前价:¥{current} {lowest_state}\n链接:{url}\n{deadline} {newlowest}".strip()
+        data = {
+        "type": "node",
+        "data": {
+            "name": "sbeam机器人",
+            "uin": "2854196310",
+            "content":mes
+                }
+            }
+        result.append(data)
+    return result
+
+# 小黑盒搜索
+def hey_box_search(game_name):
+    url1 = "https://api.xiaoheihe.cn/game/search/?os_type=web&version=999.0.0&q=" + game_name
+    res = get(url = url1).text
+    json_page = json.loads(res)
+    result = []
+    announce = {
+        "type": "node",
+        "data": {
+            "name": "sbeam机器人",
+            "uin": "2854196310",
+            "content":f"***数据来源于小黑盒官网***\n游戏{game_name}搜索结果如下"
+                }
+            }
+    result.insert(0,announce)
+    for i in range(len(json_page["result"]["games"])):
+        steamappid = str(json_page["result"]["games"][i]["steam_appid"])
+        # 名称
+        name = json_page["result"]["games"][i]["name"]
+        # 图片
+        img = "https://media.st.dl.pinyuncloud.com/steam/apps/" + steamappid + "/capsule_sm_120.jpg"
+        img1 = json_page["result"]["games"][i]["image"]        
+        # 获取平台信息
+        try:
+            platform = json_page["result"]["games"][i]["platforms"]
+            if "steam" in platform:
+                url = "https://store.steampowered.com/app/" + steamappid
+                # 原价
+                original = json_page["result"]["games"][i]["price"]["initial"]
+                # 当前价
+                current = json_page["result"]["games"][i]["price"]["current"]
+                try:
+                    lowestprice = "平史低:¥" + str(json_page["result"]["games"][i]["price"]["lowest_price"])
+                except:
+                    lowestprice = "无平史低信息"
+                if original != current:
+                    lowest = json_page["result"]["games"][i]["price"]["is_lowest"]
+                    discount = json_page["result"]["games"][i]["price"]["discount"]
+                    lowest_state = "是史低哦" if lowest == 1 else "不是史低哦"
+                    try:
+                        new_lowest = json_page["result"]["games"][i]["price"]["new_lowest"]
+                        newlowest = "好耶！是新史低！" if new_lowest == 1 else ""
+                    except:
+                        newlowest = ""
+                    # 截止日期
+                    try:
+                        deadline = json_page["result"]["games"][i]["price"]["deadline_date"]
+                    except:
+                        deadline = "无截止日期信息"
+                    mes = f"[CQ:image,file={img}]\n{name}\n原价:¥{original} 当前价:¥{current}(-{discount}%)\n{lowestprice} {lowest_state}\n链接:{url}\n{deadline} {newlowest}".strip()
+                else:
+                    mes = f"[CQ:image,file={img}]\n当前无打折信息\n当前价:¥{current} {lowestprice}\n链接:{url}"
+            else:
+                platform = "非steam平台,不进行解析,请自行查看链接"
+                url = "https://www.xiaoheihe.cn/games/detail/" + steamappid
+                mes = f"[CQ:image,file={img1}]\n{name}\n{platform}\n链接{url}"
+        except:
+            platform = "非steam平台,不进行解析,请自行查看链接"
+            url = "https://www.xiaoheihe.cn/games/detail/" + steamappid
+            mes = f"[CQ:image,file={img1}]\n{name}\n{platform}\n链接{url}"
         data = {
         "type": "node",
         "data": {
