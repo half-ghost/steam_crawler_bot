@@ -99,7 +99,7 @@ def hey_box(page):
         "data": {
             "name": "sbeam机器人",
             "uin": "2854196310",
-            "content":f"    ***数据来源于小黑盒官网***\n***默认展示小黑盒steam促销页面***"
+            "content":f"    ***数据来源于小黑盒官网***\n默认展示小黑盒steam促销页面"
                 }
             }
     result.insert(0,announce)
@@ -131,7 +131,7 @@ def hey_box(page):
             deadline = json_page["result"]["list"][i]["price"]["deadline_date"]
         except:
             deadline = "无截止日期信息"
-        mes = f"[CQ:image,file={img}]\n{title}\n原价:¥{original} 当前价:¥{current}(-{discount}%) {lowest_state}\n链接:{url}\n{deadline} {newlowest}".strip()
+        mes = f"[CQ:image,file={img}]\n{title}\n原价:¥{original} 当前价:¥{current}(-{discount}%)\n{lowest_state}\n链接:{url}\n{deadline} {newlowest}".strip()
         data = {
         "type": "node",
         "data": {
