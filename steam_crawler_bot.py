@@ -8,7 +8,7 @@ from requests.models import stream_decode_response_unicode
 
 TAG_PATH = os.path.join(os.path.dirname(__file__))
 
-# 主爬虫程序
+# steam爬虫程序
 def crawler(url_choose):
     with open(os.path.join(TAG_PATH, "tag.json"), "r", encoding="utf-8")as f:
         data = json.loads(f.read())
@@ -115,9 +115,11 @@ def hey_box(page):
         current = json_page["result"]["list"][i]["price"]["current"]
         # 是否史低1是0否
         try:
-            lowest = json_page["result"]["list"][i]["heybox_price"]["is_lowest"]
-        except:
             lowest = json_page["result"]["list"][i]["price"]["is_lowest"]
+            discount = json_page["result"]["list"][i]["price"]["discount"]
+        except:
+            lowest = json_page["result"]["list"][i]["heybox_price"]["is_lowest"]
+            discount = json_page["result"]["list"][i]["heybox_price"]["discount"]
         lowest_state = "是史低哦" if lowest == 1 else "不是史低哦"
         try:
             new_lowest = json_page["result"]["list"][i]["price"]["new_lowest"]
@@ -129,7 +131,7 @@ def hey_box(page):
             deadline = json_page["result"]["list"][i]["price"]["deadline_date"]
         except:
             deadline = "无截止日期信息"
-        mes = f"[CQ:image,file={img}]\n{title}\n原价:¥{original} 当前价:¥{current} {lowest_state}\n链接:{url}\n{deadline} {newlowest}".strip()
+        mes = f"[CQ:image,file={img}]\n{title}\n原价:¥{original} 当前价:¥{current}(-{discount}%) {lowest_state}\n链接:{url}\n{deadline} {newlowest}".strip()
         data = {
         "type": "node",
         "data": {
