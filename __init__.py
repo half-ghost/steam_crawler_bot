@@ -13,7 +13,7 @@ help = '''
 '''.strip()
 
 from hoshino import Service
-from .steam_crawler_bot import crawler,url_decide,hey_box
+from .steam_crawler_bot import crawler,url_decide,hey_box,hey_box_search
 
 sv = Service("stbot")
 url_new = "https://store.steampowered.com/search/results/?l=schinese&query&sort_by=Released_DESC&category1=998&os=win&infinite=1&start=0&count=50"
@@ -93,6 +93,21 @@ async def heybox(bot, ev):
         mes_list = hey_box(page)
         await bot.send(ev, "正在搜索并生成合并消息中，请稍等片刻！", at_sender=True)
         await bot.send_group_forward_msg(group_id=ev['group_id'], messages=mes_list)
+    except Exception as e:
+        sv.logger.error(f"Error:{e}")
+        await bot.send(ev, "哦吼，出错了，请检查主机网络情况、查看运行日志或者再试一遍")
+
+# 后接游戏名称
+@sv.on_prefix('小黑盒搜')
+async def heybox_search(bot, ev):
+    game = ev.message.extract_plain_text().strip()
+    try:
+        mes_list = hey_box_search(game)
+        if len(mes_list) != 1:
+            await bot.send(ev, "正在搜索并生成合并消息中，请稍等片刻！", at_sender=True)
+            await bot.send_group_forward_msg(group_id=ev['group_id'], messages=mes_list)
+        else:
+            await bot.send(ev, "无搜索结果")
     except Exception as e:
         sv.logger.error(f"Error:{e}")
         await bot.send(ev, "哦吼，出错了，请检查主机网络情况、查看运行日志或者再试一遍")
