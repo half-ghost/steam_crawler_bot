@@ -194,7 +194,7 @@ def hey_box_search(game_name):
                         deadline = "无截止日期信息"
                     mes = f"[CQ:image,file={img}]\n{name}\n原价:¥{original} 当前价:¥{current}(-{discount}%)\n{lowestprice} {lowest_state}\n链接:{url}\n{deadline} {newlowest}".strip()
                 else:
-                    mes = f"[CQ:image,file={img}]\n当前无打折信息\n当前价:¥{current} {lowestprice}\n链接:{url}"
+                    mes = f"[CQ:image,file={img}]\n{name}当前无打折信息\n当前价:¥{current} {lowestprice}\n链接:{url}"
             else:
                 platform = "非steam平台,不进行解析,请自行查看链接"
                 url = "https://www.xiaoheihe.cn/games/detail/" + steamappid
