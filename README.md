@@ -14,9 +14,10 @@
 <img src="https://z3.ax1x.com/2021/06/29/RdOsl4.jpg" width = "35%" height = "35%" align=center />
 
 - **根据输入的游戏名字查询结果（能搜到多少条游戏信息就返回多少条）**
-> 命令：st搜游戏 后接游戏名字
+> 命令：st搜游戏、小黑盒搜 后接游戏名字
 
 <img src="https://z3.ax1x.com/2021/06/29/RdORTx.jpg" width = "35%" height = "35%" align=center />
+<img src="https://z3.ax1x.com/2021/07/27/WIGfLF.jpg" width = "35%" height = "35%" align=center />
 
 - **小黑盒数据查询，包含了爬取到的游戏是否处于史低以及是否新史低的信息**
 > 命令：小黑盒查询/小黑盒查询页（后接阿拉伯数字）
@@ -32,6 +33,10 @@
 HoshinoBot的部署详见[HoshinoBot](https://github.com/Ice-Cirno/HoshinoBot)
 
 # 更新
+
+2021.7.27 新增小黑盒搜游戏功能，可以返回在小黑盒搜到的游戏结果。在源自小黑盒的数据结果中新增了折扣比以及打折截止日期
+
+<img src="https://z3.ax1x.com/2021/07/27/WIJfpt.jpg" width = "35%" height = "35%" align=center />
 
 2021.7.15 修复小黑盒查询可能会报错的情况，抛弃原本文本缓存机制，精简代码（怎么这垃圾插件代码越写越少
 
