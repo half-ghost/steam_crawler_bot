@@ -7,18 +7,38 @@ help = f'''
 某些有中译名字的游戏在steam上的原名可能为英文名，所以如果搜索的是该游戏的译名，则可能搜到的不是想要的结果。\
 小黑盒搜游戏可以使用中文译名，但请尽量不要使用简写（如怪物猎人简写为怪猎，是搜不到的）
 4.[小黑盒查询]：从小黑盒官网爬取数据，包含了爬取到的游戏是否处于史低价以及是否新史低的信息
-[小黑盒查询页]：后接页数(阿拉伯数字)由于小黑盒官网数据最多可以一次性抓取到30条结果，
+[小黑盒查询页]：后接页数(阿拉伯数字)由于小黑盒官网数据最多可以一次性抓取到30条结果，\
 故设置了这个命令，可以按照页数来爬取
+5.[喜加一资讯]：后接想要获取的资讯条数(阿拉伯数字)
+6.[开启 or 关闭喜加一提醒]：开启或关闭在本群的喜加一提醒服务
 
-*以上除了小黑盒的数据来自于小黑盒官网外，其他抓取内容数据均来自steam官网
+*以上除了小黑盒的数据来自于小黑盒官网外，其他抓取内容数据均来自steam官网，喜加一数据来源于IT之家
 '''.strip()
 
-from hoshino import Service
+from hoshino import Service,get_bot,priv
 from .steam_crawler_bot import crawler,url_decide,hey_box,hey_box_search
+from .xjy import xjy_compare,xjy_result
+import os
+import json
 
+FILE_PATH = os.path.join(os.path.dirname(__file__))
 sv = Service("stbot")
 url_new = "https://store.steampowered.com/search/results/?l=schinese&query&sort_by=Released_DESC&category1=998&os=win&infinite=1&start=0&count=50"
 url_specials = "https://store.steampowered.com/search/results/?l=schinese&query&sort_by=_ASC&category1=998&specials=1&os=win&filter=topsellers&start=0&count=50"
+
+
+group_list = []
+def save_group_list():
+    with open(os.path.join(FILE_PATH,'group_list.json'),'w',encoding='UTF-8') as f:
+        json.dump(group_list,f,ensure_ascii=False)
+
+# 检查group_list.json是否存在，没有创建空的
+if not os.path.exists(os.path.join(FILE_PATH,'group_list.json')):
+    save_group_list()
+
+# 读取group_list.json的信息
+with open(os.path.join(FILE_PATH,'group_list.json'),'r',encoding='UTF-8') as f:
+    group_list = json.load(f)
 
 # 匹配关键词发送相关信息，例：今日特惠，发送今日特惠信息，今日新品则发送新品信息
 @sv.on_prefix('今日')
@@ -112,6 +132,72 @@ async def heybox_search(bot, ev):
     except Exception as e:
         sv.logger.error(f"Error:{e}")
         await bot.send(ev, "哦吼，出错了，请检查主机网络情况、查看运行日志或者再试一遍")
+
+# 后接想要看的资讯条数（阿拉伯数字）
+@sv.on_prefix('喜加一资讯')
+async def xjy_info(bot, ev):
+    num = ev.message.extract_plain_text().strip()
+    state1 = xjy_result("Query", int(num))
+    mes_list = []
+    if "error" in state1:
+        sv.logger.error(state1)
+        await bot.send(ev, "哦吼，出错了，请检查主机网络情况、查看运行日志或者再试一遍")
+        pass
+    else:
+        if len(state1) <= 2:
+            for i in state1:
+                await bot.send(ev, message = i)
+        else:
+            for i in state1:
+                data = {
+                    "type": "node",
+                    "data": {
+                        "name": "sbeam机器人",
+                        "uin": "2854196310",
+                        "content":i
+                            }
+                        }
+                mes_list.append(data)
+            await bot.send_group_forward_msg(group_id=ev['group_id'], messages=mes_list)
+
+# 喜加一提醒开关
+@sv.on_fullmatch('开启喜加一提醒')
+async def open_remind(bot , ev):
+    if not priv.check_priv(ev, priv.ADMIN):
+        await bot.send(ev, "你没有权限这么做")
+        return
+    gid = str(ev.group_id)
+    if not (gid in group_list):
+        group_list.append(gid)
+        save_group_list()
+    await bot.send(ev, "喜加一提醒已开启，如有新喜加一信息则会推送")
+
+@sv.on_fullmatch('关闭喜加一提醒')
+async def off_remind(bot , ev):
+    if not priv.check_priv(ev, priv.ADMIN):
+        await bot.send(ev, "你没有权限这么做")
+        return
+    gid = str(ev.group_id)
+    if gid in group_list:
+        group_list.remove(gid)
+        save_group_list()
+    await bot.send(ev, "喜加一提醒已关闭")
+
+# 定时检查是否有新的喜加一信息
+@sv.scheduled_job('cron', hour='*', minute = '*')
+async def xjy_remind():
+    bot = get_bot()
+    url_list = xjy_compare()
+    if "error" in url_list:
+        sv.logger.error(url_list)
+    elif len(url_list) != 0:
+        mes = xjy_result("Default",url_list)
+        for gid in group_list:
+            await bot.send_group_msg(group_id=int(gid),message="侦测到在途的喜加一信息，即将进行推送...")
+            for i in mes:
+                await bot.send_group_msg(group_id=int(gid),message=i)
+    else:
+        sv.logger.info("无新喜加一信息")
 
 @sv.on_fullmatch(('st机器人帮助','St机器人帮助','ST机器人帮助'))
 async def bot_help(bot, ev):
