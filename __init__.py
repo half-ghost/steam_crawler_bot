@@ -137,11 +137,11 @@ async def heybox_search(bot, ev):
 @sv.on_prefix('喜加一资讯')
 async def xjy_info(bot, ev):
     if os.path.exists(os.path.join(FILE_PATH, "xjy_result.txt")) == False:
-    try:
-        xjy_compare()
-    except Exception as e:
-        sv.logger.error(f"Error:{e}")
-        await bot.send(ev, "哦吼，出错了，请检查主机网络情况、查看运行日志或者再试一遍")
+        try:
+            xjy_compare()
+        except Exception as e:
+            sv.logger.error(f"Error:{e}")
+            await bot.send(ev, "哦吼，出错了，请检查主机网络情况、查看运行日志或者再试一遍")
     num = ev.message.extract_plain_text().strip()
     state1 = xjy_result("Query", int(num))
     mes_list = []
