@@ -25,7 +25,7 @@ def xjy_compare():
                 url_old.append(i.strip())
         seta = set(url_new)
         setb = set(url_old)
-        compare_list = list(seta^setb)
+        compare_list = list(seta-setb)
         with open(os.path.join(FILE_PATH, "xjy_result.txt"), "w+", encoding="utf-8")as f:
             for i in url_new:
                     f.write(i + "\n")
