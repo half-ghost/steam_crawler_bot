@@ -24,6 +24,13 @@
 
 <img src="https://z3.ax1x.com/2021/07/04/Rfrq7q.jpg" width = "35%" height = "35%" align=center />
 
+- **喜加一信息获取以及推送服务**
+> 命令：喜加一资讯（后接阿拉伯数字）
+
+> 命令：开启 or 关闭喜加一提醒（需要群管理员或者机器人管理员权限）
+
+<img src="https://z3.ax1x.com/2021/08/05/feTS54.png" width = "35%" height = "35%" align=center />
+
 **更多详细请发送"st机器人帮助"获取**
 
 **使用方法：**
@@ -33,6 +40,8 @@
 HoshinoBot的部署详见[HoshinoBot](https://github.com/Ice-Cirno/HoshinoBot)
 
 # 更新
+
+2021.8.5 新增喜加一信息推送及查询功能
 
 2021.7.27 新增小黑盒搜游戏功能，可以返回在小黑盒搜到的游戏结果。在源自小黑盒的数据结果中新增了折扣比以及打折截止日期
 
