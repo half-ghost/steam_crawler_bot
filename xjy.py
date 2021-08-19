@@ -55,7 +55,7 @@ def xjy_result(model,compare_list):
                 if i.a != None:
                     if i.a['href'] == "https://www.ithome.com/":
                         text = i.text + "|"
-                    elif i.a['class'][0] == 's_tag':
+                    elif "ithome.com" in i.a['href']:
                         text = ""
                     else:
                         text = i.a["href"] + "|"
