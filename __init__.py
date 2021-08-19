@@ -27,19 +27,6 @@ url_new = "https://store.steampowered.com/search/results/?l=schinese&query&sort_
 url_specials = "https://store.steampowered.com/search/results/?l=schinese&query&sort_by=_ASC&category1=998&specials=1&os=win&filter=topsellers&start=0&count=50"
 
 
-group_list = []
-def save_group_list():
-    with open(os.path.join(FILE_PATH,'group_list.json'),'w',encoding='UTF-8') as f:
-        json.dump(group_list,f,ensure_ascii=False)
-
-# 检查group_list.json是否存在，没有创建空的
-if not os.path.exists(os.path.join(FILE_PATH,'group_list.json')):
-    save_group_list()
-
-# 读取group_list.json的信息
-with open(os.path.join(FILE_PATH,'group_list.json'),'r',encoding='UTF-8') as f:
-    group_list = json.load(f)
-
 # 匹配关键词发送相关信息，例：今日特惠，发送今日特惠信息，今日新品则发送新品信息
 @sv.on_prefix('今日')
 async def Gameinfo(bot, ev):
@@ -165,6 +152,20 @@ async def xjy_info(bot, ev):
                         }
                 mes_list.append(data)
             await bot.send_group_forward_msg(group_id=ev['group_id'], messages=mes_list)
+
+# 这部分直接抄了@H-K-Y(https://github.com/H-K-Y)大佬的原神插件里的一部分代码
+group_list = []
+def save_group_list():
+    with open(os.path.join(FILE_PATH,'group_list.json'),'w',encoding='UTF-8') as f:
+        json.dump(group_list,f,ensure_ascii=False)
+
+# 检查group_list.json是否存在，没有创建空的
+if not os.path.exists(os.path.join(FILE_PATH,'group_list.json')):
+    save_group_list()
+
+# 读取group_list.json的信息
+with open(os.path.join(FILE_PATH,'group_list.json'),'r',encoding='UTF-8') as f:
+    group_list = json.load(f)
 
 # 喜加一提醒开关
 @sv.on_fullmatch('开启喜加一提醒')
