@@ -15,22 +15,25 @@ def xjy_compare():
         for xjy_info in soup.find_all(name = "a", class_ = "title"):
             info_soup = bs(str(xjy_info), "lxml")
             url_new.append(info_soup.a["href"])
-        if os.path.exists(os.path.join(FILE_PATH, "xjy_result.txt")) == False:
+        if url_new == []:
+            return "Server Error"
+        else:
+            if os.path.exists(os.path.join(FILE_PATH, "xjy_result.txt")) == False:
+                with open(os.path.join(FILE_PATH, "xjy_result.txt"), "w+", encoding="utf-8")as f:
+                    for i in url_new:
+                        f.write(i + "\n")
+            url_old = []
+            with open(os.path.join(FILE_PATH, "xjy_result.txt"), "r+", encoding="utf-8")as f:
+                for i in f.readlines():
+                    url_old.append(i.strip())
+            seta = set(url_new)
+            setb = set(url_old)
+            compare_list = list(seta-setb)
             with open(os.path.join(FILE_PATH, "xjy_result.txt"), "w+", encoding="utf-8")as f:
                 for i in url_new:
-                    f.write(i + "\n")
-        url_old = []
-        with open(os.path.join(FILE_PATH, "xjy_result.txt"), "r+", encoding="utf-8")as f:
-            for i in f.readlines():
-                url_old.append(i.strip())
-        seta = set(url_new)
-        setb = set(url_old)
-        compare_list = list(seta-setb)
-        with open(os.path.join(FILE_PATH, "xjy_result.txt"), "w+", encoding="utf-8")as f:
-            for i in url_new:
-                    f.write(i + "\n")
+                        f.write(i + "\n")
     except Exception as e:
-        compare_list = f"error:{e}"
+        compare_list.append(f"error:{e}")
     return compare_list
 
 def xjy_result(model,compare_list):
@@ -55,7 +58,7 @@ def xjy_result(model,compare_list):
                 if i.a != None:
                     if i.a['href'] == "https://www.ithome.com/":
                         text = i.text + "|"
-                    elif "ithome.com" in i.a['href']:
+                    elif i.a['class'][0] == 's_tag':
                         text = ""
                     else:
                         text = i.a["href"] + "|"
@@ -73,3 +76,5 @@ def xjy_result(model,compare_list):
     except Exception as e:
         result_text_list = f"error:{e}"
     return result_text_list
+
+print(xjy_compare())
