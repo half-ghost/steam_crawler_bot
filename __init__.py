@@ -195,7 +195,9 @@ async def off_remind(bot , ev):
 async def xjy_remind():
     bot = get_bot()
     url_list = xjy_compare()
-    if "error" in url_list:
+    if "Server Error" in url_list:
+        sv.logger.info("访问it之家出错，非致命错误，可忽略")
+    elif "error" in url_list:
         sv.logger.error(url_list)
     elif len(url_list) != 0:
         mes = xjy_result("Default",url_list)
