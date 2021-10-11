@@ -41,6 +41,8 @@ HoshinoBot的部署详见[HoshinoBot](https://github.com/Ice-Cirno/HoshinoBot)
 
 # 更新
 
+2021.10.12 修复了访问不到it之家喜加一页面后会出现腹泻式推送的问题
+
 2021.8.19 优化喜加一爬虫的数据处理
 
 2021.8.5 新增喜加一信息推送及查询功能
@@ -62,3 +64,5 @@ HoshinoBot的部署详见[HoshinoBot](https://github.com/Ice-Cirno/HoshinoBot)
 # 计划
 
 或许会加入更多奇奇怪怪的功能，欢迎提交pr或issue来告诉我你们希望能加入什么功能
+
+找个时间把这些代码重写一下吧，毕竟是刚学爬虫时写出来的东西，难免写的很烂
