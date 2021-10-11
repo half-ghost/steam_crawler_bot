@@ -76,5 +76,3 @@ def xjy_result(model,compare_list):
     except Exception as e:
         result_text_list = f"error:{e}"
     return result_text_list
-
-print(xjy_compare())
